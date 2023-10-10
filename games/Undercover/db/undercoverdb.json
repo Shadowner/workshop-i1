@@ -1,0 +1,10 @@
+[
+  {
+    "isHarceled": false,
+    "content": "est pas harcelé woulah"
+  },
+  {
+    "isHarceled": true,
+    "content": "est harcelé"
+  }
+]
