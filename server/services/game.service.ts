@@ -1,10 +1,10 @@
-import { BaseGame } from '../games/BaseGame.ts';
-import { UnderCover } from '../games/Undercover/Undercover.ts';
+import { BaseGame } from "../games/BaseGame.ts";
+import { UnderCover } from "../games/Undercover/Undercover.ts";
+import { Party } from "../model/Party.ts";
 
-const games: (new () => BaseGame<any>)[] = [UnderCover as unknown as new () => BaseGame<any>];
+const games: (new (party: Party, changeCallback: () => void) => BaseGame<any>)[] = [UnderCover as unknown as new () => BaseGame<any>];
 
-export function getRandomGame() {
-    const randomGame = games[Math.floor(Math.random() * games.length)];
-    return new randomGame();
+export function getRandomGame(party: Party, changeCallback: () => void) {
+  const randomGame = games[Math.floor(Math.random() * games.length)];
+  return new randomGame(party, changeCallback);
 }
-
