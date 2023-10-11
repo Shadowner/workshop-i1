@@ -1,4 +1,3 @@
-import { API_DECLARATION } from "https://deno.land/x/quickapi@v0.0.4/mod.ts";
 import { PartyDTO } from '../DTO/PartyDTO.ts';
 import { createParty, getPartyByRoomCode } from "../services/party.service.ts";
 import { AnswerType, GameDTO } from '../DTO/GameDTO.ts';
@@ -6,6 +5,7 @@ import { getPlayer } from "../services/player.service.ts";
 import { PlayerDTO } from "../DTO/PlayerDTO.ts";
 import { PlayerAnswerDTO } from '../DTO/PlayerAnswerDTO.ts';
 import { BasicGameStatus } from "../enum/BasicGameStatus.ts";
+import { API_DECLARATION } from './QuickApi.ts';
 
 export default {
     party: {
@@ -30,6 +30,7 @@ export default {
     },
 
     player: {
+
         setName: (req, name: string): PlayerDTO => {
             //XXX
             req.player.name = name;
@@ -68,18 +69,22 @@ export default {
         }
     },
 
-
+    setHost: (req) => {
+        if (!req.player) throw new Error("Player not found");
+        req.player.ISHOST = true;
+        return req.player.toDTO();
+    },
 
 
     // Accessible only to Presentation 
     pres: {
         $beforeAll: (req) => {
+            console.log("test");
             if (!req.player) throw new Error("Player not found");
             if (!req.player.ISHOST) throw new Error("Player is not host");
         },
         party: {
             create: (req, name: string, maxPlayers: number = 5) => {
-
                 const party = createParty(name, maxPlayers, req.player!);
                 return party.toDTO();
             },
